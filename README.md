@@ -41,10 +41,10 @@ Output will be:
 ```
 
 ## Release
-1. Increment version in `src/TODO.fsproj`
-2. Run `$ fake build target release`
-3. Move TODO package (`TODO.VERSION.nupkg`) from `./release` dir to the NugetServer packages dir
-4. Update `CHANGELOG.md`
+1. Increment version in `src/Logging.fsproj`
+2. Update `CHANGELOG.md`
+3. Commit new version and tag it
+4. Run `$ fake build target release`
 
 ## Development
 ### Requirements
