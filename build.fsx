@@ -15,19 +15,33 @@ let tee f a =
     f a
     a
 
-let sourceDir = "src"
+let sourceDir = "."
 
 let nugetServer = sprintf "http://development-nugetserver-common-stable.service.devel1-services.consul:%i"
 let apiKey = "123456"
 
+let sources = sprintf "-s %s -s https://api.nuget.org/v3/index.json"
+
+let nugetServerUrl p =
+    match p.Context.Arguments with
+    | head::_ ->
+        if head.StartsWith "http" then head
+        else head |> int |> nugetServer
+    | _ -> failwithf "Release target requires nuget server url or port"
+
 Target.create "Clean" (fun _ ->
-    !! "src/bin"
-    ++ "src/obj"
+    !! "**/bin"
+    ++ "**/obj"
     |> Shell.cleanDirs
 )
 
-Target.create "Build" (fun _ ->
-    !! "src/*.*proj"
+Target.create "Build" (fun p ->
+    let nugetServerUrl = nugetServerUrl p
+
+    runDotNet (sprintf "restore --no-cache %s" (sources nugetServerUrl)) sourceDir
+    runDotNet "build --no-restore" sourceDir
+
+    !! "./*.*proj"
     |> Seq.iter (DotNet.build id)
 )
 
@@ -45,7 +59,7 @@ Target.create "Release" (fun p ->
         sourceDir
         |> runDotNet (sprintf "nuget push %s -s %s -k %s" path nugetServerUrl apiKey)
 
-    !! "src/**/bin/**/*.nupkg"
+    !! "**/bin/**/*.nupkg"
     |> Seq.iter (fun path ->
         path
         |> tee pushToNuget
