@@ -48,6 +48,48 @@ Output will be:
 [2019-02-01 10:21:34]    [Example] Show some more output
 ```
 
+## Logging to Graylog
+Send logging messages to the Graylog with UDP.
+
+### Examples
+See more [examples](https://stash.int.lmc.cz/projects/ARCHI/repos/flogging/browse/example).
+
+#### Simple string messages
+```fs
+open Logging
+
+let logger =
+    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
+    |> Graylog.Logger.create
+
+let debug = Graylog.Logger.debug logger
+let info = Graylog.Logger.info logger
+let warning = Graylog.Logger.warning logger
+let error = Graylog.Logger.error logger
+
+debug "Debug Message"
+info "Info Message"
+warning "Warning Message"
+error "Error Message"
+```
+
+#### Messages with args
+There could be any number of additional args.
+
+```fs
+open Logging
+
+let logger =
+    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
+    |> Graylog.Logger.create
+    |> Graylog.Logger.withArgs
+
+logger.Debug("[{context}] Debug Message with {foo} {bar}", context, "Foo", "Bar")
+logger.Info("[{context}] Info Message", context)
+logger.Warning("[{context}] Warning Message", context)
+logger.Error("[{context}] Error Message", context)
+```
+
 ## Release
 1. Increment version in `src/Logging.fsproj`
 2. Update `CHANGELOG.md`

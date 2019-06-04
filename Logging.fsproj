@@ -9,11 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="src/Graylog.fs" />
     <Compile Include="src/Logging.fs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Lmc.ErrorHandling" Version="1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ConsoleStyle" Version="1.2.0" />
+    <PackageReference Include="Gelf.Extensions.Logging" Version="1.5.1" />
   </ItemGroup>
 
 </Project>
