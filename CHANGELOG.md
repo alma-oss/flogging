@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 1.1.0 - 2019-06-05
 - Allow logging to Graylog
 
 ## 1.0.0 - 2019-01-31
