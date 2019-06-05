@@ -13,19 +13,25 @@ module Log =
         | _ -> Verbosity.Normal
         |> Console.setVerbosity
 
+    let isQuiet = Console.isQuiet
+    let isNormal = Console.isNormal
+    let isVerbose = Console.isVerbose
+    let isVeryVerbose = Console.isVeryVerbose
+    let isDebug = Console.isDebug
+
     let normal context text =
         Console.messagef2 "[%s] %s" context text
 
     let verbose context text =
-        if Console.isVerbose() then
+        if isVerbose() then
             normal context text
 
     let veryVerbose context text =
-        if Console.isVeryVerbose() then
+        if isVeryVerbose() then
             normal context text
 
     let debug context text =
-        if Console.isDebug() then
+        if isDebug() then
             normal context text
 
     let error context text =
