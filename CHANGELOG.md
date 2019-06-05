@@ -2,6 +2,9 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Change Graylog message
+    - Use `Environment.MachineName` as `source` instead of `facility`
+    - Use `Facility` as `facility`
 
 ## 1.1.0 - 2019-06-05
 - Allow logging to Graylog

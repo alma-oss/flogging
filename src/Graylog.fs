@@ -86,12 +86,15 @@ module Graylog =
             |> orFail
 
         let internal toOptions configuration =
-            GelfLoggerOptions(
-                Host = (configuration.Host |> Host.value),
-                LogSource = (configuration.Facility |> Facility.value),
-                Port = (configuration.Port |> Port.value),
-                Protocol = GelfProtocol.Udp
-            )
+            let options =
+                GelfLoggerOptions(
+                    Host = (configuration.Host |> Host.value),
+                    LogSource = System.Environment.MachineName,
+                    Port = (configuration.Port |> Port.value),
+                    Protocol = GelfProtocol.Udp
+                )
+            options.AdditionalFields.Add("facility", configuration.Facility |> Facility.value)
+            options
 
     module Logger =
         type LoggerWithArgs internal (logger: ILogger) =
