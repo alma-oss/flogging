@@ -1,6 +1,6 @@
 namespace Logging
 
-[<RequireQualifiedAccessAttribute>]
+[<RequireQualifiedAccess>]
 module Log =
     open MF.ConsoleStyle
 
