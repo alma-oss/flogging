@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add `Graylog.Diagnostics` module
+    - Add `isAlive` function to allow checking Graylog status
 
 ## 1.3.0 - 2019-06-05
 - Expose functions for getting a current verbosity level
