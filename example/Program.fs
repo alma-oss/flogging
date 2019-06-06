@@ -4,9 +4,9 @@ open System
 open MF.ConsoleStyle
 open Logging
 
-let graylogExample () =
+let graylogExample graylogHost =
     let logger =
-        Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "logging-example"
+        Graylog.Configuration.createDefault graylogHost (Graylog.Facility "logging-example")
         |> Graylog.Logger.create
 
     let debug =
@@ -68,7 +68,29 @@ let graylogExample () =
 let main argv =
     Console.title "Example - logging"
 
-    graylogExample()
+    asyncResult {
+        let! host =
+            "gray.dev1.services.lmc"
+            |> Graylog.Host.create
+            |> Result.mapError (sprintf "%A")
+            |> AsyncResult.ofResult
+
+        let! isAlive =
+            host
+            |> Graylog.Diagnostics.isAlive
+            |> AsyncResult.ofAsync
+
+        if isAlive then
+            host
+            |> graylogExample
+
+            return "Example done"
+
+        else
+            return! AsyncResult.ofError "Graylog is not alive"
+    }
+    |> Async.RunSynchronously
+    |> printfn "%A"
 
     Console.success "Done"
     0 // return an integer exit code

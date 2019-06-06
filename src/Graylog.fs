@@ -3,8 +3,9 @@ namespace Logging
 [<RequireQualifiedAccess>]
 module Graylog =
     open System
-    open Microsoft.Extensions.Logging
+    open FSharp.Data
     open Gelf.Extensions.Logging
+    open Microsoft.Extensions.Logging
 
     type Logger = private Logger of ILogger
 
@@ -135,3 +136,17 @@ module Graylog =
 
         let withArgs (Logger logger) =
             LoggerWithArgs(logger)
+
+    module Diagnostics =
+        let isAlive (Host host) =
+            async {
+                try
+                    let! response =
+                        host.TrimEnd('/')
+                        |> sprintf "https://%s/api/system/lbstatus"
+                        |> Http.AsyncRequestString
+
+                    return response = "ALIVE"
+                with
+                | _ -> return false
+            }
