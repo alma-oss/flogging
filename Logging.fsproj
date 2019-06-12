@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Lmc.ErrorHandling" Version="1.0" />
+    <PackageReference Include="Lmc.ServiceIdentification" Version="2.2" />
   </ItemGroup>
 
   <ItemGroup>

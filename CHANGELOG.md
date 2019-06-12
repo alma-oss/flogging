@@ -2,6 +2,7 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Allow `Service` identification to graylog additional options
 
 ## 1.4.0 - 2019-06-06
 - Add `Graylog.Diagnostics` module
