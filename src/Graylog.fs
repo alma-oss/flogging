@@ -6,6 +6,7 @@ module Graylog =
     open FSharp.Data
     open Gelf.Extensions.Logging
     open Microsoft.Extensions.Logging
+    open ServiceIdentification
 
     type Logger = private Logger of ILogger
 
@@ -42,6 +43,7 @@ module Graylog =
         Host: Host
         Port: Port
         Facility: Facility
+        Service: Service option
     }
 
     type ConfigurationError =
@@ -57,10 +59,22 @@ module Graylog =
                 Host = host
                 Port = port
                 Facility = facility
+                Service = None
+            }
+
+        let createForService service host facility port =
+            {
+                Host = host
+                Port = port
+                Facility = facility
+                Service = Some service
             }
 
         let createDefault host facility =
             create host facility (Port DefaultPort)
+
+        let createDefaultForService service host facility =
+            createForService service host facility (Port DefaultPort)
 
         let createFromBasic host facility port =
             result {
@@ -95,6 +109,13 @@ module Graylog =
                     Protocol = GelfProtocol.Udp
                 )
             options.AdditionalFields.Add("facility", configuration.Facility |> Facility.value)
+
+            match configuration.Service with
+            | Some service ->
+                options.AdditionalFields.Add("domain", service.Domain |> Domain.value)
+                options.AdditionalFields.Add("context", service.Context |> Context.value)
+            | _ -> ()
+
             options
 
     module Logger =
