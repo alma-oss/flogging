@@ -54,7 +54,7 @@ module Graylog =
             | Ok configuration -> configuration
             | Error e -> failwithf "Configuration was not created, because of %A." e
 
-        let create host facility port =
+        let create host port facility =
             {
                 Host = host
                 Port = port
@@ -62,7 +62,7 @@ module Graylog =
                 Service = None
             }
 
-        let createForService service host facility port =
+        let createForService service host port facility =
             {
                 Host = host
                 Port = port
@@ -71,12 +71,12 @@ module Graylog =
             }
 
         let createDefault host facility =
-            create host facility (Port DefaultPort)
+            create host (Port DefaultPort) facility
 
         let createDefaultForService service host facility =
-            createForService service host facility (Port DefaultPort)
+            createForService service host (Port DefaultPort) facility
 
-        let createFromBasic host facility port =
+        let createFromBasic host port facility =
             result {
                 let! host =
                     host
@@ -86,15 +86,15 @@ module Graylog =
                 let facility = Facility facility
                 let port = Port port
 
-                return create host facility port
+                return create host port facility
             }
 
-        let createFromBasicOrFail host facility port =
-            createFromBasic host facility port
+        let createFromBasicOrFail host port facility =
+            createFromBasic host port facility
             |> orFail
 
         let createDefaultFromBasic host facility =
-            createFromBasic host facility DefaultPort
+            createFromBasic host DefaultPort facility
 
         let createDefaultFromBasicOrFail host facility =
             createDefaultFromBasic host facility
@@ -104,7 +104,7 @@ module Graylog =
             let options =
                 GelfLoggerOptions(
                     Host = (configuration.Host |> Host.value),
-                    LogSource = System.Environment.MachineName,
+                    LogSource = Environment.MachineName,
                     Port = (configuration.Port |> Port.value),
                     Protocol = GelfProtocol.Udp
                 )
