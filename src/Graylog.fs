@@ -161,13 +161,20 @@ module Graylog =
     module Diagnostics =
         type private HealthCheckSchema = JsonProvider<"src/schema/consul-service-healthcheck.json">
 
+        let private requestServiceHealth service =
+            service
+            |> sprintf "http://127.0.0.1:8500/v1/health/service/%s"
+            |> Http.AsyncRequestString
+
+        let private checkStatus status =
+            status = "passing"
+
         let isAlive graylogService =
             async {
                 try
                     let! response =
                         graylogService
-                        |> sprintf "http://127.0.0.1:8500/v1/health/service/%s"
-                        |> Http.AsyncRequestString
+                        |> requestServiceHealth
 
                     let healthCheck =
                         response
@@ -181,8 +188,63 @@ module Graylog =
                                 if healthCheck.Checks |> Seq.isEmpty then false
                                 else
                                     healthCheck.Checks
-                                    |> Seq.forall (fun check -> check.Status = "passing")
+                                    |> Seq.forall (fun check -> check.Status |> checkStatus)
                             )
                 with
                 | _ -> return false
+            }
+
+        type GraylogError =
+            | Exception of string
+            | ConsulHttpError of string
+            | EmptyResponseError
+            | NoChecksInResponse of string
+            | WrongStatus of string
+            | UnknownError
+
+        let isAliveResult graylogService =
+            asyncResult {
+                let! response =
+                    async {
+                        try
+                            return! graylogService |> requestServiceHealth
+                        with
+                        | exn -> return sprintf "Error: %s" exn.Message
+                    }
+                    |> AsyncResult.ofAsync
+                    |> AsyncResult.mapError ConsulHttpError
+
+                if response.StartsWith "Error: " then
+                    return! AsyncResult.ofError (Exception <| response.Replace("Error: ", ""))
+
+                let healthCheck = response |> HealthCheckSchema.Parse
+
+                return!
+                    if healthCheck |> Seq.isEmpty then AsyncResult.ofError EmptyResponseError
+                    else
+                        let mutable lastError = Ok ()
+
+                        let isAlive =
+                            healthCheck
+                            |> Seq.forall (fun healthCheck ->
+                                if healthCheck.Checks |> Seq.isEmpty
+                                then
+                                    lastError <- Error (NoChecksInResponse response)
+                                    false
+                                else
+                                    healthCheck.Checks
+                                    |> Seq.forall (fun check ->
+                                        if check.Status |> checkStatus then true
+                                        else
+                                            lastError <- Error (WrongStatus check.Status)
+                                            false
+                                    )
+                            )
+
+                        if isAlive then AsyncResult.ofSuccess true
+                        else
+                            match lastError with
+                            | Ok _ -> UnknownError
+                            | Error error -> error
+                            |> AsyncResult.ofError
             }
