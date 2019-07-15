@@ -73,8 +73,8 @@ let main argv =
 
         let! isAlive =
             graylogService
-            |> Graylog.Diagnostics.isAlive  // keep in mind, that this will NOT work on host, where is not a consul agent
-            |> AsyncResult.ofAsync
+            |> Graylog.Diagnostics.isAliveResult  // keep in mind, that this will NOT work on host, where is not a consul agent
+            |> AsyncResult.mapError (sprintf "%A")
 
         let! host =
             "gray.dev1.services.lmc"
