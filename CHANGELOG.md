@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 2.1.0 - 2019-07-15
 - Add `Graylog.Diagnostics.isAliveResult` function to get verbose result with explicit Errors on _not alive_ state
 
 ## 2.0.0 - 2019-07-15
