@@ -69,23 +69,24 @@ let main argv =
     Console.title "Example - logging"
 
     asyncResult {
+        let graylogService = "sys-graylog-common-stable--gelf"
+
+        let! isAlive =
+            graylogService
+            |> Graylog.Diagnostics.isAlive  // keep in mind, that this will NOT work on host, where is not a consul agent
+            |> AsyncResult.ofAsync
+
         let! host =
             "gray.dev1.services.lmc"
             |> Graylog.Host.create
             |> Result.mapError (sprintf "%A")
             |> AsyncResult.ofResult
 
-        let! isAlive =
-            host
-            |> Graylog.Diagnostics.isAlive
-            |> AsyncResult.ofAsync
-
         if isAlive then
             host
             |> graylogExample
 
             return "Example done"
-
         else
             return! AsyncResult.ofError "Graylog is not alive"
     }

@@ -1,0 +1,57 @@
+[
+    {
+        "Node": {
+            "ID": "aa0792d6-717d-9daf-b745-eca5c97fd286",
+            "Node": "dcall-1.dev1.services.lmc",
+            "Address": "10.8.7.34",
+            "Datacenter": "dev1-services",
+            "TaggedAddresses": {
+                "lan": "10.8.7.34",
+                "wan": "10.8.7.34"
+            },
+            "Meta": {
+                "consul-network-segment": ""
+            },
+            "CreateIndex": 6477053,
+            "ModifyIndex": 6477053
+        },
+        "Service": {
+            "ID": "_nomad-task-egkmbkk47vlamibihxfwzdabtv4w2ltt",
+            "Service": "sys-graylog-common-stable--gelf",
+            "Tags": [
+                "sys-graylog-common"
+            ],
+            "Address": "10.8.7.34",
+            "Meta": {
+                "external-source": "nomad"
+            },
+            "Port": 12201,
+            "Weights": {
+                "Passing": 1,
+                "Warning": 1
+            },
+            "EnableTagOverride": false,
+            "ProxyDestination": "",
+            "Proxy": {},
+            "Connect": {},
+            "CreateIndex": 6477053,
+            "ModifyIndex": 6477053
+        },
+        "Checks": [
+            {
+                "Node": "dcall-1.dev1.services.lmc",
+                "CheckID": "serfHealth",
+                "Name": "Serf Health Status",
+                "Status": "passing",
+                "Notes": "",
+                "Output": "Agent alive and reachable",
+                "ServiceID": "",
+                "ServiceName": "",
+                "ServiceTags": [],
+                "Definition": {},
+                "CreateIndex": 6477053,
+                "ModifyIndex": 6477053
+            }
+        ]
+    }
+]

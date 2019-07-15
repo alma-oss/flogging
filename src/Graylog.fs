@@ -159,15 +159,30 @@ module Graylog =
             LoggerWithArgs(logger)
 
     module Diagnostics =
-        let isAlive (Host host) =
+        type private HealthCheckSchema = JsonProvider<"src/schema/consul-service-healthcheck.json">
+
+        let isAlive graylogService =
             async {
                 try
                     let! response =
-                        host.TrimEnd('/')
-                        |> sprintf "https://%s/api/system/lbstatus"
+                        graylogService
+                        |> sprintf "http://127.0.0.1:8500/v1/health/service/%s"
                         |> Http.AsyncRequestString
 
-                    return response = "ALIVE"
+                    let healthCheck =
+                        response
+                        |> HealthCheckSchema.Parse
+
+                    return
+                        if healthCheck |> Seq.isEmpty then false
+                        else
+                            healthCheck
+                            |> Seq.forall (fun healthCheck ->
+                                if healthCheck.Checks |> Seq.isEmpty then false
+                                else
+                                    healthCheck.Checks
+                                    |> Seq.forall (fun check -> check.Status = "passing")
+                            )
                 with
                 | _ -> return false
             }
