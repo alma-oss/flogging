@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 2.0.0 - 2019-07-15
 - [**BC**] Change order of parameters for functions, to be more user friendly
     - `Graylog.Configuration.create`
     - `Graylog.Configuration.createForService`
