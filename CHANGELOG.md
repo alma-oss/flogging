@@ -2,6 +2,11 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- [**BC**] Change order of parameters for functions, to be more user friendly
+    - `Graylog.Configuration.create`
+    - `Graylog.Configuration.createForService`
+    - `Graylog.Configuration.createFromBasic`
+    - `Graylog.Configuration.createFromBasicOrFail`
 
 ## 1.6.0 - 2019-06-26
 - Add lint
