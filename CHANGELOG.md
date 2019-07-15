@@ -7,6 +7,7 @@
     - `Graylog.Configuration.createForService`
     - `Graylog.Configuration.createFromBasic`
     - `Graylog.Configuration.createFromBasicOrFail`
+- [**BC**] Change implementation of `Graylog.isAlive` function, to use `consul` as health check and consul service as identification
 
 ## 1.6.0 - 2019-06-26
 - Add lint
