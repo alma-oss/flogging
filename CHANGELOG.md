@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 2.2.0 - 2019-07-16
 - Allow graylog to connect the cluster (_one of the cluster nodes_)
 - Add graylog configuration functions
     - `Graylog.Configuration.createCluster`
