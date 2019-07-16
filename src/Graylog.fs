@@ -163,7 +163,7 @@ module Graylog =
 
         let private requestServiceHealth service =
             service
-            |> sprintf "http://127.0.0.1:8500/v1/health/service/%s"
+            |> sprintf "http://consul.service.consul/v1/health/service/%s"
             |> Http.AsyncRequestString
 
         let private checkStatus status =
