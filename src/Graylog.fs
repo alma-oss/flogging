@@ -39,9 +39,12 @@ module Graylog =
     module Port =
         let value (Port port) = port
 
+    type Connection =
+        | Single of Host * Port
+        | Cluster of (Host * Port) list
+
     type Configuration = {
-        Host: Host
-        Port: Port
+        Connection: Connection
         Facility: Facility
         Service: Service option
     }
@@ -56,16 +59,14 @@ module Graylog =
 
         let create host port facility =
             {
-                Host = host
-                Port = port
+                Connection = Single (host, port)
                 Facility = facility
                 Service = None
             }
 
         let createForService service host port facility =
             {
-                Host = host
-                Port = port
+                Connection = Single (host, port)
                 Facility = facility
                 Service = Some service
             }
@@ -100,12 +101,35 @@ module Graylog =
             createDefaultFromBasic host facility
             |> orFail
 
+        let createCluster cluster facility =
+            {
+                Connection = Cluster cluster
+                Facility = facility
+                Service = None
+            }
+
+        let createClusterForService service cluster facility =
+            {
+                Connection = Cluster cluster
+                Facility = facility
+                Service = Some service
+            }
+
+        let private getRandomItem list =
+            list
+            |> List.item ((Random()).Next(list.Length))
+
         let internal toOptions configuration =
+            let host, port =
+                match configuration.Connection with
+                | Single (host, port) -> host, port
+                | Cluster cluster -> cluster |> getRandomItem
+
             let options =
                 GelfLoggerOptions(
-                    Host = (configuration.Host |> Host.value),
+                    Host = (host |> Host.value),
                     LogSource = Environment.MachineName,
-                    Port = (configuration.Port |> Port.value),
+                    Port = (port |> Port.value),
                     Protocol = GelfProtocol.Udp
                 )
             options.AdditionalFields.Add("facility", configuration.Facility |> Facility.value)

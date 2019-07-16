@@ -57,6 +57,19 @@ Output will be:
 ## Logging to Graylog
 Send logging messages to the Graylog with UDP.
 
+### Create Graylog Logger
+
+#### Connect single node
+```fs
+let logger = Graylog.Configuration.create host port facility
+```
+
+#### Connect cluster
+- This will randomly select one of the nodes and connect it
+```fs
+let logger = Graylog.Configuration.createCluster [(host1, port); (host2, port)] facility
+```
+
 ### Examples
 See more [examples](https://stash.int.lmc.cz/projects/ARCHI/repos/flogging/browse/example).
 

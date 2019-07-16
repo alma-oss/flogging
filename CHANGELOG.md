@@ -2,6 +2,10 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Allow graylog to connect the cluster (_one of the cluster nodes_)
+- Add graylog configuration functions
+    - `Graylog.Configuration.createCluster`
+    - `Graylog.Configuration.createClusterForService`
 
 ## 2.1.1 - 2019-07-16
 - Fix consul host
