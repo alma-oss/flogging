@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>Lmc.Logging</PackageId>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
     <RepositoryUrl>https://stash.int.lmc.cz/projects/ARCHI/repos/flogging/browse</RepositoryUrl>
   </PropertyGroup>
 
