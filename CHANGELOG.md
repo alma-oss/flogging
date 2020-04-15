@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Change git host to bitbucket
+- Update dependencies
 
 ## 2.2.0 - 2019-07-16
 - Allow graylog to connect the cluster (_one of the cluster nodes_)
