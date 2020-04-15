@@ -1,17 +1,21 @@
-FROM dcreg.service.consul/prod/development-dotnet-core-sdk-common:latest
+FROM dcreg.service.consul/dev/development-dotnet-core-sdk-common:3.1
 
 # build scripts
-COPY ./fake.sh /flogging/
-COPY ./build.fsx /flogging/
-COPY ./paket.dependencies /flogging/
-COPY ./paket.references /flogging/
-COPY ./paket.lock /flogging/
+COPY ./fake.sh /library/
+COPY ./build.fsx /library/
+COPY ./paket.dependencies /library/
+COPY ./paket.references /library/
+COPY ./paket.lock /library/
 
 # sources
-COPY ./Logging.fsproj /flogging/
-COPY ./src /flogging/src
+COPY ./Logging.fsproj /library/
+COPY ./src /library/src
 
-WORKDIR /flogging
+# others
+COPY ./.git /library/.git
+COPY ./CHANGELOG.md /library/
+
+WORKDIR /library
 
 RUN \
     ./fake.sh build target Build no-clean
