@@ -2,7 +2,7 @@
 
 open System
 open MF.ConsoleStyle
-open Logging
+open Lmc.Logging
 
 let graylogExample graylogHost =
     let logger =
@@ -71,10 +71,12 @@ let main argv =
     asyncResult {
         let graylogService = "sys-graylog-common-stable--gelf"
 
-        let! isAlive =
+        let isAlive =
             graylogService
             |> Graylog.Diagnostics.isAliveResult  // keep in mind, that this will NOT work on host, where is not a consul agent
             |> AsyncResult.mapError (sprintf "%A")
+
+        printfn "IsAlive: %A" (isAlive |> Async.RunSynchronously)
 
         let! host =
             "gray.dev1.services.lmc"
@@ -82,13 +84,10 @@ let main argv =
             |> Result.mapError (sprintf "%A")
             |> AsyncResult.ofResult
 
-        if isAlive then
-            host
-            |> graylogExample
+        host
+        |> graylogExample
 
-            return "Example done"
-        else
-            return! AsyncResult.ofError "Graylog is not alive"
+        return "Example done"
     }
     |> Async.RunSynchronously
     |> printfn "%A"
