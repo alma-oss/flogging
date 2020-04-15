@@ -69,7 +69,7 @@ let main argv =
     Console.title "Example - logging"
 
     asyncResult {
-        let graylogService = "sys-graylog-common-stable--gelf"
+        let graylogService = GraylogService "sys-graylog-common-stable--gelf"
 
         let isAlive =
             graylogService

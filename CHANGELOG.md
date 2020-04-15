@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add `GraylogService` type
+- Add `Lmc.Logging.Environment` namespace with `Graylog` module, to allow simplified parsing Environment variables.
 
 ## 3.0.0 - 2020-04-15
 - Change git host to bitbucket
