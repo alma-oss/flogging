@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>Lmc.Logging</PackageId>
     <Version>2.2.0</Version>
-    <RepositoryUrl>https://stash.int.lmc.cz/projects/ARCHI/repos/flogging/browse</RepositoryUrl>
+    <RepositoryUrl>https://bitbucket.lmc.cz/projects/ARCHI/repos/flogging/browse</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

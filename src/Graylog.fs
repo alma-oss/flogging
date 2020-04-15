@@ -1,4 +1,4 @@
-namespace Logging
+namespace Lmc.Logging
 
 [<RequireQualifiedAccess>]
 module Graylog =
