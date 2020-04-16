@@ -1,5 +1,7 @@
 namespace Lmc.Logging
 
+type GraylogService = GraylogService of string
+
 [<RequireQualifiedAccess>]
 module Graylog =
     open System
@@ -193,7 +195,7 @@ module Graylog =
         let private checkStatus status =
             status = "passing"
 
-        let isAlive graylogService =
+        let isAlive (GraylogService graylogService) =
             async {
                 try
                     let! response =
@@ -226,7 +228,7 @@ module Graylog =
             | WrongStatus of string
             | UnknownError
 
-        let isAliveResult graylogService =
+        let isAliveResult (GraylogService graylogService) =
             asyncResult {
                 let! response =
                     async {

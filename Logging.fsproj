@@ -12,6 +12,8 @@
   <ItemGroup>
     <Compile Include="src/Graylog.fs" />
     <Compile Include="src/Logging.fs" />
+
+    <Compile Include="src/Environment/Graylog.fs" />
   </ItemGroup>
 
   <Import Project=".paket\Paket.Restore.targets" />
