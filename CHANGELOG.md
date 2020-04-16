@@ -2,6 +2,7 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add `ApplicationLogger`
 
 ## 3.1.0 - 2020-04-16
 - Add `GraylogService` type
