@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 4.0.0 - 2020-11-23
 - [**BC**] Use .netcore 5.0
 
 ## 3.3.0 - 2020-11-23
