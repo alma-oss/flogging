@@ -8,7 +8,8 @@ module Graylog =
     open FSharp.Data
     open Gelf.Extensions.Logging
     open Microsoft.Extensions.Logging
-    open ServiceIdentification
+    open Lmc.ServiceIdentification
+    open Lmc.ErrorHandling
 
     type Logger = private Logger of ILogger
 

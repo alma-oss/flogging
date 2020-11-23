@@ -1,5 +1,6 @@
 namespace Lmc.Logging.Environment
 
+open Lmc.ErrorHandling
 open Lmc.Logging
 
 //

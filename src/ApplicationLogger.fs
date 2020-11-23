@@ -16,7 +16,7 @@ type ApplicationLogger = {
 
 [<RequireQualifiedAccess>]
 module ApplicationLogger =
-    open ServiceIdentification
+    open Lmc.ServiceIdentification
 
     let quietLogger =
         let ignore: LogMessage = fun _ _ -> ()
@@ -105,3 +105,5 @@ module ApplicationLogger =
             Warning = logger.Warning >*> additionalLogger.Warning
             Error = logger.Error >*> additionalLogger.Error
         }
+
+    // todo - add logger with "closured" context in it
