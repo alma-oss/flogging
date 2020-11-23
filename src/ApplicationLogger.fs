@@ -16,7 +16,7 @@ type ApplicationLogger = {
 
 [<RequireQualifiedAccess>]
 module ApplicationLogger =
-    open ServiceIdentification
+    open Lmc.ServiceIdentification
 
     let quietLogger =
         let ignore: LogMessage = fun _ _ -> ()

@@ -2,6 +2,7 @@
 
 open System
 open MF.ConsoleStyle
+open Lmc.ErrorHandling
 open Lmc.Logging
 
 let graylogExample graylogHost =
