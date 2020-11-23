@@ -105,3 +105,5 @@ module ApplicationLogger =
             Warning = logger.Warning >*> additionalLogger.Warning
             Error = logger.Error >*> additionalLogger.Error
         }
+
+    // todo - add logger with "closured" context in it
