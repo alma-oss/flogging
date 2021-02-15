@@ -14,7 +14,7 @@ type ToolDir =
     | Local of string
 
 // ========================================================================================================
-// === F# / Library fake build ==================================================================== 1.3.0 =
+// === F# / Library fake build ==================================================================== 1.3.1 =
 // --------------------------------------------------------------------------------------------------------
 // Options:
 //  - no-clean   - disables clean of dirs in the first step (required on CI)
@@ -31,8 +31,8 @@ type ToolDir =
 // 1. Information about the project to be used at NuGet and in AssemblyInfo files and other FAKE configuration
 // --------------------------------------------------------------------------------------------------------
 
-let project = "Lmc.Logging"
-let summary = "Library for easy Logging."
+let project = "Lmc.ConsentsPerson"
+let summary = "Types and modules for Person in consent domain."
 
 let release = ReleaseNotes.parse (System.IO.File.ReadAllLines "CHANGELOG.md" |> Seq.filter ((<>) "## Unreleased"))
 let gitCommit = Information.getCurrentSHA1(".")
@@ -144,6 +144,7 @@ Target.create "AssemblyInfo" (fun _ ->
         )
 
     !! "src/**/*.fsproj"
+    ++ "./*.fsproj"
     ++ "tests/**/*.fsproj"
     |> Seq.map getProjectDetails
     |> Seq.iter (fun (projFileName, _, folderName, attributes) ->
@@ -155,6 +156,7 @@ Target.create "AssemblyInfo" (fun _ ->
 
 Target.create "Build" (fun _ ->
     !! "src/**/*.fsproj"
+    ++ "./*.fsproj"
     ++ "tests/**/*.fsproj"
     |> Seq.iter (DotNet.build id)
 )
@@ -176,6 +178,7 @@ Target.create "Lint" <| skipOn "no-lint" (fun _ ->
         |> check
 
     !! "src/**/*.fsproj"
+    ++ "./*.fsproj"
     ++ "tests/**/*.fsproj"
     |> Seq.map (fun fsproj ->
         match toolsDir with
