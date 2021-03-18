@@ -2,6 +2,7 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add explicit dependency on `Microsoft.Extensions.Logging (5.0)`
 
 ## 4.1.0 - 2021-02-15
 - Update dependencies
