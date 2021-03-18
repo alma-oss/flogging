@@ -4,6 +4,7 @@ source https://api.nuget.org/v3/index.json
 nuget FSharp.Core
 nuget ConsoleStyle ~> 2.0
 nuget Gelf.Extensions.Logging ~> 2.0
+nuget Microsoft.Extensions.Logging ~> 5.0
 nuget FSharp.Data ~> 3.0
 
 git ssh://git@bitbucket.lmc.cz:7999/archi/nuget-server.git master Packages: /nuget/
