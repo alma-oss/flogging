@@ -1,5 +1,5 @@
 F-Logging
-=======
+=========
 
 Library for Logging to the terminal.
 It logs to the stdout or stderr based on used function. I has colorful output.
@@ -75,7 +75,7 @@ See more [examples](https://bitbucket.lmc.cz/projects/ARCHI/repos/flogging/brows
 
 #### Simple string messages
 ```fs
-open Logging
+open Lmc.Logging
 
 let logger =
     Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
@@ -96,7 +96,7 @@ error "Error Message"
 There could be any number of additional args.
 
 ```fs
-open Logging
+open Lmc.Logging
 
 let logger =
     Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
