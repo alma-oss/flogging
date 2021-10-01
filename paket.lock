@@ -47,6 +47,12 @@ NUGET
       Microsoft.Extensions.Options (>= 5.0)
       Microsoft.Extensions.Primitives (>= 5.0)
     Microsoft.Extensions.Primitives (5.0.1)
+    Serilog (2.10)
+    Serilog.Extensions.Logging (3.0.1)
+      Microsoft.Extensions.Logging (>= 2.0)
+      Serilog (>= 2.8)
+    Serilog.Sinks.Console (4.0)
+      Serilog (>= 2.10)
   remote: paket-files/git_bitbucket.lmc.cz7999/archi/nuget-server/nuget
     Lmc.ErrorHandling (5.1.0)
       FSharp.Core (>= 5.0.2)

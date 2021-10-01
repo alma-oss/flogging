@@ -7,6 +7,7 @@
 - [**BC**] Remove ConsoleStyle
 - [**BC**] Remove ApplicationLogger
 - Use common Logger extensions to provide a logger factory
+- Add `Serilog` logger
 
 ## 4.2.0 - 2021-03-18
 - Add explicit dependency on `Microsoft.Extensions.Logging (5.0)`
