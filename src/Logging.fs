@@ -1,41 +1,39 @@
 namespace Lmc.Logging
 
+open System
+open Microsoft.Extensions.Logging
+
+type LoggerOption =
+    | UseLevel of LogLevel
+    | UseLevelFromEnvironment of environmentVariableName: string
+    | LogToConsole
+    | LogToConsoleSimple
+    | LogToConsoleAsJson
+    | LogToFromEnv of environmentVariableName: string
+    | UseProvider of ILoggerProvider
+
 [<RequireQualifiedAccess>]
-module Log =
-    open MF.ConsoleStyle
+module LoggerFactory =
+    let create (options: LoggerOption list) =
+        LoggerFactory.Create(fun builder ->
+            options
+            |> List.iter (ignore << function
+                | UseLevel level -> builder.SetMinimumLevel(level)
+                | UseLevelFromEnvironment envName -> builder.SetMinimumLevel(envName |> getEnvVar |> Option.defaultValue "" |> LogLevel.parse)
+                | LogToConsole -> builder.AddConsole()
+                | LogToConsoleSimple -> builder.AddSimpleConsole()
+                | LogToConsoleAsJson -> builder.AddJsonConsole()
+                | LogToFromEnv envName ->
+                    match envName |> getEnvVar |> Option.defaultValue "" with
+                    | "console" -> builder.AddConsole()
+                    | "console-simple" | "simple" -> builder.AddSimpleConsole()
+                    | "console-json" | "json" -> builder.AddJsonConsole()
+                    | _ -> builder
+                | UseProvider provider -> builder.AddProvider(provider)
+            )
+        )
 
-    let setVerbosityLevel level =
-        match level with
-        | "q" -> Verbosity.Quiet
-        | "v" -> Verbosity.Verbose
-        | "vv" -> Verbosity.VeryVerbose
-        | "vvv" -> Verbosity.Debug
-        | _ -> Verbosity.Normal
-        |> Console.setVerbosity
-
-    let isQuiet = Console.isQuiet
-    let isNormal = Console.isNormal
-    let isVerbose = Console.isVerbose
-    let isVeryVerbose = Console.isVeryVerbose
-    let isDebug = Console.isDebug
-
-    let normal context text =
-        Console.messagef2 "[%s] %s" context text
-
-    let verbose context text =
-        if isVerbose() then
-            normal context text
-
-    let veryVerbose context text =
-        if isVeryVerbose() then
-            normal context text
-
-    let debug context text =
-        if isDebug() then
-            normal context text
-
-    let error context text =
-        Console.errorf2 "[Error][%s] %s" context text
-
-    let warning context text =
-        Console.errorf2 "[Warning][%s] %s" context text
+[<RequireQualifiedAccess>]
+module NetLogger =
+    let logger (factory: ILoggerFactory) context =
+        factory.CreateLogger(context)

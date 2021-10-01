@@ -18,102 +18,14 @@ Add following into `paket.references`
 Lmc.Logging
 ```
 
-## Verbosity
-- `q` -> Verbosity.Quiet
-- `v` -> Verbosity.Verbose
-- `vv` -> Verbosity.VeryVerbose
-- `vvv` -> Verbosity.Debug
-- _any other_ -> Verbosity.Normal (_also a default_)
-
-## Logging
-Functions uses external lib for logging and formatting the output.
-It uses verbosity directly in functions, so you can use specific _verbosity_ and output will be shown only if it should be by that specific verbosity.
-For more info, see https://github.com/MortalFlesh/console-style
-
-### Examples
-#### Normal verbosity (default)
-```fs
-// without setting any verbosity -> Verbosity.Normal
-Log.normal "Example" "Show some output"
-Log.verbose "Example" "Show some more output"
-```
-Output will be:
-```
-[Example] Show some output
-```
-
-#### Verbose verbosity
-```fs
-Log.setVerbosityLevel "v"
-Log.normal "Example" "Show some output"
-Log.verbose "Example" "Show some more output"
-```
-Output will be:
-```
-[2019-02-01 10:21:34]    [Example] Show some output
-[2019-02-01 10:21:34]    [Example] Show some more output
-```
-
-## Logging to Graylog
-Send logging messages to the Graylog with UDP.
-
-### Create Graylog Logger
-
-#### Connect single node
-```fs
-let logger = Graylog.Configuration.create host port facility
-```
-
-#### Connect cluster
-- This will randomly select one of the nodes and connect it
-```fs
-let logger = Graylog.Configuration.createCluster [(host1, port); (host2, port)] facility
-```
-
-### Examples
-See more [examples](https://bitbucket.lmc.cz/projects/ARCHI/repos/flogging/browse/example).
-
-#### Simple string messages
-```fs
-open Lmc.Logging
-
-let logger =
-    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
-    |> Graylog.Logger.create
-
-let debug = Graylog.Logger.debug logger
-let info = Graylog.Logger.info logger
-let warning = Graylog.Logger.warning logger
-let error = Graylog.Logger.error logger
-
-debug "Debug Message"
-info "Info Message"
-warning "Warning Message"
-error "Error Message"
-```
-
-#### Messages with args
-There could be any number of additional args.
-
-```fs
-open Lmc.Logging
-
-let logger =
-    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
-    |> Graylog.Logger.create
-    |> Graylog.Logger.withArgs
-
-logger.Debug("[{context}] Debug Message with {foo} {bar}", context, "Foo", "Bar")
-logger.Info("[{context}] Info Message", context)
-logger.Warning("[{context}] Warning Message", context)
-logger.Error("[{context}] Error Message", context)
-```
+## Useful links
+- https://www.tutorialsteacher.com/core/fundamentals-of-logging-in-dotnet-core
 
 ## Release
 1. Increment version in `Logging.fsproj`
 2. Update `CHANGELOG.md`
 3. Commit new version and tag it
-4. Run `$ fake build target release`
+4. Run `$ ./build.sh -t release`
 5. Go to `nuget-server` repo, run `faket build target copyAll` and push new versions
 
 ## Development
@@ -123,10 +35,10 @@ logger.Error("[{context}] Error Message", context)
 
 ### Build
 ```bash
-fake build
+./build.sh
 ```
 
 ### Watch
 ```bash
-fake build target watch
+./build.sh -t watch
 ```

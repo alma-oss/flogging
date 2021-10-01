@@ -1,6 +1,6 @@
 FSharp.Core
-ConsoleStyle
-Gelf.Extensions.Logging
 FSharp.Data
+Microsoft.Extensions.Logging
+Microsoft.Extensions.Logging.Console
 Lmc.ErrorHandling
 Lmc.ServiceIdentification
