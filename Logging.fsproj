@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="src/Graylog.fs" />
+    <Compile Include="src/Utils.fs" />
     <Compile Include="src/Logging.fs" />
-    <Compile Include="src/ApplicationLogger.fs" />
-
-    <Compile Include="src/Environment/Graylog.fs" />
   </ItemGroup>
 
   <Import Project=".paket\Paket.Restore.targets" />

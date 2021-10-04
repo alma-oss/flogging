@@ -1,5 +1,5 @@
 F-Logging
-=======
+=========
 
 Library for Logging to the terminal.
 It logs to the stdout or stderr based on used function. I has colorful output.
@@ -18,102 +18,89 @@ Add following into `paket.references`
 Lmc.Logging
 ```
 
-## Verbosity
-- `q` -> Verbosity.Quiet
-- `v` -> Verbosity.Verbose
-- `vv` -> Verbosity.VeryVerbose
-- `vvv` -> Verbosity.Debug
-- _any other_ -> Verbosity.Normal (_also a default_)
-
-## Logging
-Functions uses external lib for logging and formatting the output.
-It uses verbosity directly in functions, so you can use specific _verbosity_ and output will be shown only if it should be by that specific verbosity.
-For more info, see https://github.com/MortalFlesh/console-style
-
-### Examples
-#### Normal verbosity (default)
+## Usage
 ```fs
-// without setting any verbosity -> Verbosity.Normal
-Log.normal "Example" "Show some output"
-Log.verbose "Example" "Show some more output"
-```
-Output will be:
-```
-[Example] Show some output
-```
+open Lmc.Logging
 
-#### Verbose verbosity
-```fs
-Log.setVerbosityLevel "v"
-Log.normal "Example" "Show some output"
-Log.verbose "Example" "Show some more output"
-```
-Output will be:
-```
-[2019-02-01 10:21:34]    [Example] Show some output
-[2019-02-01 10:21:34]    [Example] Show some more output
-```
+use factory = LoggerFactory.create [
+    UseLevel LogLevel.Trace
 
-## Logging to Graylog
-Send logging messages to the Graylog with UDP.
+    LogToConsole
 
-### Create Graylog Logger
+    LogToSerilog [
+        SerilogOption.LogToConsole
+        SerilogOption.LogToConsoleAsJson
 
-#### Connect single node
-```fs
-let logger = Graylog.Configuration.create host port facility
+        AddMeta ("domain", "domain")
+        AddMeta ("context", "context")
+        AddMeta ("purpose", "purpose")
+        AddMeta ("version", "version")
+    ]
+]
+
+let logger = factory.CreateLogger("Example")
+
+logger.LogTrace("{Level} message", "Trace")
 ```
 
-#### Connect cluster
-- This will randomly select one of the nodes and connect it
-```fs
-let logger = Graylog.Configuration.createCluster [(host1, port); (host2, port)] facility
+## Configure from environment variables
+
+### Log output from environment variables
+You can add dynamic option `LogToFromEnvironment` with name of a environment variable, which will be used to determine the output of the logs.
+You can add multiple values, separated by `;` (_you can add spaces for readability_).
+
+```sh
+# log to console (multiple options to set up)
+LOG_TO="console"
+LOG_TO="stdout"
+
+# log to console as json (multiple options to set up)
+LOG_TO="console-json"
+LOG_TO="json"
+
+# log to both console AND to console as json
+LOG_TO="console; json"
 ```
-
-### Examples
-See more [examples](https://bitbucket.lmc.cz/projects/ARCHI/repos/flogging/browse/example).
-
-#### Simple string messages
-```fs
-open Logging
-
-let logger =
-    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
-    |> Graylog.Logger.create
-
-let debug = Graylog.Logger.debug logger
-let info = Graylog.Logger.info logger
-let warning = Graylog.Logger.warning logger
-let error = Graylog.Logger.error logger
-
-debug "Debug Message"
-info "Info Message"
-warning "Warning Message"
-error "Error Message"
-```
-
-#### Messages with args
-There could be any number of additional args.
 
 ```fs
-open Logging
-
-let logger =
-    Graylog.Configuration.createDefaultFromBasicOrFail "gray.dev1.services.lmc" "facility"
-    |> Graylog.Logger.create
-    |> Graylog.Logger.withArgs
-
-logger.Debug("[{context}] Debug Message with {foo} {bar}", context, "Foo", "Bar")
-logger.Info("[{context}] Info Message", context)
-logger.Warning("[{context}] Warning Message", context)
-logger.Error("[{context}] Error Message", context)
+LoggerFactory.create [
+    LogToFromEnvironment "LOG_TO"
+]
 ```
+
+### Log level from environment variables
+
+```sh
+LOG_LEVEL="debug"
+```
+
+```fs
+LoggerFactory.create [
+    UseLevelFromEnvironment "LOG_LEVEL"
+]
+```
+
+Log level is parsed based on following table:
+
+| Final level | Options | Description |
+| ---         | ---     | ---         |
+| _LogLevel_.**Trace** | `"trace"`, `"vvv"` | Logs that contain the most detailed messages. These messages may contain sensitive application data. These messages are disabled by default and should never be enabled in a production environment. |
+| _LogLevel_.**Debug** | `"debug"`, `"vv"` | Logs that are used for interactive investigation during development. These logs should primarily contain information useful for debugging and have no long-term value. |
+| _LogLevel_.**Information** | `"information"`, `"v"`, `"normal"` | Logs that track the general flow of the application. These logs should have long-term value. |
+| _LogLevel_.**Warning** | `"warning"` | Logs that highlight an abnormal or unexpected event in the application flow, but do not otherwise cause the application execution to stop. |
+| _LogLevel_.**Error** | `"error"` | Logs that highlight when the current flow of execution is stopped due to a failure. These should indicate a failure in the current activity, not an application-wide failure. |
+| _LogLevel_.**Critical** | `"critical`" | Logs that describe an unrecoverable application or system crash, or a catastrophic failure that requires immediate attention. |
+| _LogLevel_.**None** | `"quiet"`, `"q"`, `_anything else_` | Not used for writing log messages. Specifies that a logging category should not write any messages. |
+
+## Useful links
+- https://www.tutorialsteacher.com/core/fundamentals-of-logging-in-dotnet-core
+- https://benfoster.io/blog/serilog-best-practices/
 
 ## Release
 1. Increment version in `Logging.fsproj`
 2. Update `CHANGELOG.md`
 3. Commit new version and tag it
-4. Run `$ fake build target release`
+4. Run `$ ./build.sh -t release`
 5. Go to `nuget-server` repo, run `faket build target copyAll` and push new versions
 
 ## Development
@@ -123,10 +110,10 @@ logger.Error("[{context}] Error Message", context)
 
 ### Build
 ```bash
-fake build
+./build.sh
 ```
 
 ### Watch
 ```bash
-fake build target watch
+./build.sh -t watch
 ```
