@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 5.1.0 - 2021-10-04
 - Allow to add `Serilog` metadata by environment variables
 
 ## 5.0.0 - 2021-10-04
