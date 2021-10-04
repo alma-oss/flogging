@@ -19,6 +19,7 @@ type SerilogOption =
     | LogToConsoleAsJson
     | LogToFromEnvironment of environmentVariableName: string
     | AddMeta of name: string * value: string
+    | AddMetaFromEnvironment of environmentVariableName: string
 
 type private LoggerFactoryOptions =
     | UseLevel of LogLevel
@@ -95,6 +96,21 @@ module LoggerFactory =
                     |> List.choose SerilogBuilderOption.ofLogTo
 
                 | SerilogOption.AddMeta (key, value) -> [ SerilogBuilderOption.AddMeta (key, value) ]
+                | SerilogOption.AddMetaFromEnvironment envVar ->
+                    match envVar |> getEnvVar with
+                    | null | "" -> []
+                    | values ->
+                        values.Split ';'
+                        |> Seq.choose (function
+                            | null | "" -> None
+                            | value ->
+                                match value.Split ':' |> Seq.map (fun s -> s.Trim()) |> Seq.toList with
+                                | [ ""; _ ] -> None
+                                | [ key; value ] -> Some (SerilogBuilderOption.AddMeta (key, value))
+                                | _ -> None
+                        )
+                        |> Seq.toList
+
             )
             |> List.distinct
 

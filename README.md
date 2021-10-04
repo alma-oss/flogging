@@ -92,6 +92,21 @@ Log level is parsed based on following table:
 | _LogLevel_.**Critical** | `"critical`" | Logs that describe an unrecoverable application or system crash, or a catastrophic failure that requires immediate attention. |
 | _LogLevel_.**None** | `"quiet"`, `"q"`, `_anything else_` | Not used for writing log messages. Specifies that a logging category should not write any messages. |
 
+### Add metadata to Serilog by environment variables
+> This is useful if you have library which uses a logger factory inside
+
+```sh
+LOG_META="domain:tearoom; context:menu"
+```
+
+```fs
+LoggerFactory.create [
+    LogToSerilog [
+        AddMetaFromEnvironment "LOG_META"
+    ]
+]
+```
+
 ## Useful links
 - https://www.tutorialsteacher.com/core/fundamentals-of-logging-in-dotnet-core
 - https://benfoster.io/blog/serilog-best-practices/
