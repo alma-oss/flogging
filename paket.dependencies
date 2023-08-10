@@ -2,12 +2,11 @@ framework: net7.0
 
 source https://api.nuget.org/v3/index.json
 nuget FSharp.Core ~> 7.0
-nuget FSharp.Data ~> 4.0
 nuget Microsoft.Extensions.Logging ~> 7.0
 nuget Microsoft.Extensions.Logging.Console ~> 7.0
-nuget Serilog ~> 2.10
+nuget Serilog ~> 3.0
 nuget Serilog.Sinks.Console ~> 4.0
-nuget Serilog.Extensions.Logging ~> 3.0
+nuget Serilog.Extensions.Logging ~> 7.0
 
 git ssh://git@bitbucket.lmc.cz:7999/archi/nuget-server.git master Packages: /nuget/
 # LMC Nuget dependencies:
