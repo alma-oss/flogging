@@ -1,5 +1,4 @@
 FSharp.Core
-FSharp.Data
 Microsoft.Extensions.Logging
 Microsoft.Extensions.Logging.Console
 Serilog

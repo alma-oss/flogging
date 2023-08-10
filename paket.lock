@@ -2,8 +2,6 @@ RESTRICTION: == net7.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (7.0.400)
-    FSharp.Data (4.2.10)
-      FSharp.Core (>= 5.0.1)
     Microsoft.Extensions.Configuration (7.0)
       Microsoft.Extensions.Configuration.Abstractions (>= 7.0)
       Microsoft.Extensions.Primitives (>= 7.0)
@@ -46,10 +44,10 @@ NUGET
       Microsoft.Extensions.Options (>= 7.0)
       Microsoft.Extensions.Primitives (>= 7.0)
     Microsoft.Extensions.Primitives (7.0)
-    Serilog (2.12)
-    Serilog.Extensions.Logging (3.1)
-      Microsoft.Extensions.Logging (>= 2.0)
-      Serilog (>= 2.9)
+    Serilog (3.0.1)
+    Serilog.Extensions.Logging (7.0)
+      Microsoft.Extensions.Logging (>= 7.0)
+      Serilog (>= 2.12)
     Serilog.Sinks.Console (4.1)
       Serilog (>= 2.10)
     System.Text.Encodings.Web (7.0)
@@ -62,7 +60,7 @@ NUGET
       FSharp.Core (>= 7.0.300 < 8.0)
 GIT
   remote: ssh://git@bitbucket.lmc.cz:7999/archi/nuget-server.git
-     (6e916deee34337fb4674ab47e32009c2c996dfe7)
+     (6e66895a9096e643a9fe9f6dd0d509e6d53eb665)
       path: /nuget/
 GROUP Build
 STORAGE: NONE
