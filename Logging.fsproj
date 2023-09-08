@@ -4,9 +4,9 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>Lmc.Logging</PackageId>
+    <PackageId>Alma.Logging</PackageId>
     <Version>7.1.0</Version>
-    <RepositoryUrl>https://bitbucket.lmc.cz/projects/ARCHI/repos/flogging/browse</RepositoryUrl>
+    <RepositoryUrl>https://github.com/almacareer/prc-flogging</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

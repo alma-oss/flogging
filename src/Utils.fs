@@ -1,4 +1,4 @@
-namespace Lmc.Logging
+namespace Alma.Logging
 
 open System
 
