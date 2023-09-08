@@ -1,9 +1,9 @@
 // Learn more about F# at http://fsharp.org
 
 open System
-open Lmc.ErrorHandling
-open Lmc.Logging
-open Lmc.ServiceIdentification
+open Alma.ErrorHandling
+open Alma.Logging
+open Alma.ServiceIdentification
 open Microsoft.Extensions.Logging
 
 [<EntryPoint>]
@@ -14,7 +14,7 @@ let main argv =
 
     use factory = LoggerFactory.create [
         UseLevel LogLevel.Trace                 // this level is "globally" used in logger factory (for additional providers)
-        // UseProvider (Tracing.provider())     // add Tracing log provider, which add current log to trace as baggage (see Lmc.Tracing)
+        // UseProvider (Tracing.provider())     // add Tracing log provider, which add current log to trace as baggage (see Alma.Tracing)
 
         LogToSimpleConsole
 

@@ -1,4 +1,4 @@
-namespace Lmc.Logging
+namespace Alma.Logging
 
 open System
 open Microsoft.Extensions.Logging
@@ -46,7 +46,7 @@ module private SerilogBuilderOption =
 
 [<RequireQualifiedAccess>]
 module SerilogOptions =
-    open Lmc.ServiceIdentification
+    open Alma.ServiceIdentification
 
     let ofService (service: Service) =
         [

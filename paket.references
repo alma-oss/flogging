@@ -4,5 +4,5 @@ Microsoft.Extensions.Logging.Console
 Serilog
 Serilog.Sinks.Console
 Serilog.Extensions.Logging
-Lmc.ErrorHandling
-Lmc.ServiceIdentification
+Alma.ErrorHandling
+Alma.ServiceIdentification
