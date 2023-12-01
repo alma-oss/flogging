@@ -2,6 +2,9 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add `LoggerFactory` functions
+    - `createCustom`
+    - `createCustomSerilog`
 
 ## 8.0.0 - 2023-09-08
 - [**BC**] Use `Alma` namespace
