@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 8.1.0 - 2023-12-01
 - Add `LoggerFactory` functions
     - `createCustom`
     - `createCustomSerilog`
