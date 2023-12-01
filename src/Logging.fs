@@ -174,12 +174,12 @@ module LoggerFactory =
             | Some serilogOptions -> LoggerFactoryOptions.LogToSerilog serilogOptions :: factoryOptions
             | _ -> factoryOptions
 
-    let createSerilog (options: SerilogOption list) =
+    let createCustomSerilog customize (options: SerilogOption list) =
         let builder = LoggerConfiguration()
 
         options
         |> Normalize.serilogBuilderOptions
-        |> List.iter (ignore << function
+        |> List.iter (customize << function
             | SerilogBuilderOption.UseLevel level -> builder.MinimumLevel.Is level
             | SerilogBuilderOption.LogToConsole ->
                 builder.WriteTo.Console(
@@ -192,14 +192,17 @@ module LoggerFactory =
 
         builder.CreateLogger()
 
-    let create (options: LoggerOption list) =
+    let createCustom customize customizeSerilog (options: LoggerOption list) =
         LoggerFactory.Create(fun builder ->
             options
             |> Normalize.factoryOptions
-            |> List.iter (ignore << function
+            |> List.iter (customize << function
                 | LoggerFactoryOptions.UseLevel level -> builder.SetMinimumLevel(level)
                 | LoggerFactoryOptions.LogToConsole -> builder.AddConsole(fun c -> c.LogToStandardErrorThreshold <- LogLevel.Error)
-                | LoggerFactoryOptions.LogToSerilog serilogOptions -> builder.AddSerilog(createSerilog serilogOptions, true)
+                | LoggerFactoryOptions.LogToSerilog serilogOptions -> builder.AddSerilog(createCustomSerilog customizeSerilog serilogOptions, true)
                 | LoggerFactoryOptions.UseProvider provider -> builder.AddProvider(provider)
             )
         )
+
+    let createSerilog = createCustomSerilog ignore
+    let create = createCustom ignore ignore
