@@ -2,6 +2,9 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Add options parameter to functions
+    - `LoggerFactory.create`
+    - `LoggerFactory.createSerilog`
 
 ## 8.1.0 - 2023-12-01
 - Add `LoggerFactory` functions

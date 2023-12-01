@@ -204,5 +204,5 @@ module LoggerFactory =
             )
         )
 
-    let createSerilog = createCustomSerilog ignore
-    let create = createCustom ignore ignore
+    let createSerilog options = createCustomSerilog ignore options
+    let create options = createCustom ignore ignore options
