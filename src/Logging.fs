@@ -229,7 +229,6 @@ module LoggerFactory =
                 let ignoredPaths =
                     paths
                     |> List.map normalizePath
-                    |> tee (String.concat ", " >> printfn "IgnoredPaths: %s")
                     |> Set.ofList
 
                 builder.Filter.ByExcluding(fun (logEvent: LogEvent) ->
