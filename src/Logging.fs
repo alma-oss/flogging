@@ -10,6 +10,7 @@ type private SerilogBuilderOption =
     | LogToConsole
     | LogToConsoleAsJson
     | AddMeta of name: string * value: string
+    | IgnorePaths of string list
 
 type SerilogOption =
     | UseLevel of LogLevel
@@ -20,6 +21,10 @@ type SerilogOption =
     | LogToFromEnvironment of environmentVariableName: string
     | AddMeta of name: string * value: string
     | AddMetaFromEnvironment of environmentVariableName: string
+    | IgnorePathHealthCheck
+    | IgnorePathMetrics
+    | IgnorePathReady
+    | IgnorePaths of string list
 
 type private LoggerFactoryOptions =
     | UseLevel of LogLevel
@@ -81,26 +86,48 @@ module SerilogOptions =
 module LoggerFactory =
     [<RequireQualifiedAccess>]
     module private Normalize =
+        let private ignorePaths (paths: string list) (acc: SerilogBuilderOption list): SerilogBuilderOption list =
+            match paths, acc with
+            | [], acc -> acc
+            | paths, [] -> [ SerilogBuilderOption.IgnorePaths paths ]
+            | paths, acc ->
+                let ignoredPaths =
+                    acc
+                    |> List.collect (function
+                        | SerilogBuilderOption.IgnorePaths paths -> paths
+                        | _ -> []
+                    )
+                    |> List.append paths
+                    |> List.distinct
+
+                acc
+                |> List.filter (function
+                    | SerilogBuilderOption.IgnorePaths _ -> false
+                    | _ -> true
+                )
+                |> List.append [ SerilogBuilderOption.IgnorePaths ignoredPaths ]
+
         let serilogBuilderOptions options =
             options
-            |> List.collect (function
-                | SerilogOption.UseLogEventLevel level -> [ SerilogBuilderOption.UseLevel level ]
-                | SerilogOption.UseLevel level -> [ level |> LogLevel.toLogEventLog |> SerilogBuilderOption.UseLevel ]
-                | SerilogOption.UseLevelFromEnvironment envVar -> [ envVar |> LogLevel.parseFromEnv |> LogLevel.toLogEventLog |> SerilogBuilderOption.UseLevel ]
+            |> List.fold (fun acc -> function
+                | SerilogOption.UseLogEventLevel level -> SerilogBuilderOption.UseLevel level :: acc
+                | SerilogOption.UseLevel level -> (level |> LogLevel.toLogEventLog |> SerilogBuilderOption.UseLevel) :: acc
+                | SerilogOption.UseLevelFromEnvironment envVar -> (envVar |> LogLevel.parseFromEnv |> LogLevel.toLogEventLog |> SerilogBuilderOption.UseLevel) :: acc
 
-                | SerilogOption.LogToConsole -> [ SerilogBuilderOption.LogToConsole ]
-                | SerilogOption.LogToConsoleAsJson -> [ SerilogBuilderOption.LogToConsoleAsJson ]
+                | SerilogOption.LogToConsole -> SerilogBuilderOption.LogToConsole :: acc
+                | SerilogOption.LogToConsoleAsJson -> SerilogBuilderOption.LogToConsoleAsJson :: acc
                 | SerilogOption.LogToFromEnvironment envVar ->
-                    envVar
+                    (envVar
                     |> LogTo.parseFromEnv
-                    |> List.choose SerilogBuilderOption.ofLogTo
+                    |> List.choose SerilogBuilderOption.ofLogTo)
+                    @ acc
 
-                | SerilogOption.AddMeta (key, value) -> [ SerilogBuilderOption.AddMeta (key, value) ]
+                | SerilogOption.AddMeta (key, value) -> SerilogBuilderOption.AddMeta (key, value) :: acc
                 | SerilogOption.AddMetaFromEnvironment envVar ->
                     match envVar |> getEnvVar with
-                    | null | "" -> []
+                    | null | "" -> acc
                     | values ->
-                        values.Split ';'
+                        (values.Split ';'
                         |> Seq.choose (function
                             | null | "" -> None
                             | value ->
@@ -109,9 +136,14 @@ module LoggerFactory =
                                 | [ key; value ] -> Some (SerilogBuilderOption.AddMeta (key, value))
                                 | _ -> None
                         )
-                        |> Seq.toList
+                        |> Seq.toList)
+                        @ acc
 
-            )
+                | SerilogOption.IgnorePathHealthCheck -> acc |> ignorePaths [ "/health-check" ]
+                | SerilogOption.IgnorePathMetrics -> acc |> ignorePaths [ "/metrics" ]
+                | SerilogOption.IgnorePathReady -> acc |> ignorePaths [ "/ready" ]
+                | SerilogOption.IgnorePaths paths -> acc |> ignorePaths paths
+            ) []
             |> List.distinct
 
         let collectSerilogOptions options =
@@ -188,6 +220,23 @@ module LoggerFactory =
                 )
             | SerilogBuilderOption.LogToConsoleAsJson -> builder.WriteTo.Console(Formatting.Json.JsonFormatter(), standardErrorFromLevel = LogEventLevel.Error)
             | SerilogBuilderOption.AddMeta (key, value) -> builder.Enrich.WithProperty(key, value)
+
+            | SerilogBuilderOption.IgnorePaths [] -> builder
+            | SerilogBuilderOption.IgnorePaths paths ->
+                /// Path should contain " (double quote) at the beginning and end
+                let normalizePath (path: string) = path.Trim('"') |> sprintf "\"%s\""
+
+                let ignoredPaths =
+                    paths
+                    |> List.map normalizePath
+                    |> tee (String.concat ", " >> printfn "IgnoredPaths: %s")
+                    |> Set.ofList
+
+                builder.Filter.ByExcluding(fun (logEvent: LogEvent) ->
+                    match logEvent.Properties.TryGetValue("Path") with
+                    | true, value -> value.ToString() |> ignoredPaths.Contains
+                    | _ -> false
+                )
         )
 
         builder.CreateLogger()
