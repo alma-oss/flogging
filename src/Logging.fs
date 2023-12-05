@@ -144,6 +144,7 @@ module LoggerFactory =
                 | SerilogOption.IgnorePathReady -> acc |> ignorePaths [ "/ready" ]
                 | SerilogOption.IgnorePaths paths -> acc |> ignorePaths paths
             ) []
+            |> List.rev
             |> List.distinct
 
         let collectSerilogOptions options =
@@ -212,14 +213,21 @@ module LoggerFactory =
         options
         |> Normalize.serilogBuilderOptions
         |> List.iter (customize << function
-            | SerilogBuilderOption.UseLevel level -> builder.MinimumLevel.Is level
+            | SerilogBuilderOption.UseLevel level ->
+                // printfn "[Serilog] builder.MinimumLevel.Is %A" level
+                builder.MinimumLevel.Is level
             | SerilogBuilderOption.LogToConsole ->
+                // printfn "[Serilog] builder.WriteTo.Console"
                 builder.WriteTo.Console(
                     standardErrorFromLevel = LogEventLevel.Error,
                     outputTemplate = "[{Level:u3}:{Timestamp:HH:mm:ss}][{SourceContext:l}] {Message:lj}{NewLine}{Exception}"
                 )
-            | SerilogBuilderOption.LogToConsoleAsJson -> builder.WriteTo.Console(Formatting.Json.JsonFormatter(), standardErrorFromLevel = LogEventLevel.Error)
-            | SerilogBuilderOption.AddMeta (key, value) -> builder.Enrich.WithProperty(key, value)
+            | SerilogBuilderOption.LogToConsoleAsJson ->
+                // printfn "[Serilog] builder.WriteTo.Console as json"
+                builder.WriteTo.Console(Formatting.Json.JsonFormatter(), standardErrorFromLevel = LogEventLevel.Error)
+            | SerilogBuilderOption.AddMeta (key, value) ->
+                // printfn "[Serilog] builder.Enrich.WithProperty %A = %A" key value
+                builder.Enrich.WithProperty(key, value)
 
             | SerilogBuilderOption.IgnorePaths [] -> builder
             | SerilogBuilderOption.IgnorePaths paths ->
@@ -230,6 +238,7 @@ module LoggerFactory =
                     paths
                     |> List.map normalizePath
                     |> Set.ofList
+                // printfn "[Serilog] builder.Filter paths: %A" (ignoredPaths |> String.concat ", ")
 
                 builder.Filter.ByExcluding(fun (logEvent: LogEvent) ->
                     match logEvent.Properties.TryGetValue("Path") with
@@ -245,10 +254,18 @@ module LoggerFactory =
             options
             |> Normalize.factoryOptions
             |> List.iter (customize << function
-                | LoggerFactoryOptions.UseLevel level -> builder.SetMinimumLevel(level)
-                | LoggerFactoryOptions.LogToConsole -> builder.AddConsole(fun c -> c.LogToStandardErrorThreshold <- LogLevel.Error)
-                | LoggerFactoryOptions.LogToSerilog serilogOptions -> builder.AddSerilog(createCustomSerilog customizeSerilog serilogOptions, true)
-                | LoggerFactoryOptions.UseProvider provider -> builder.AddProvider(provider)
+                | LoggerFactoryOptions.UseLevel level ->
+                    // printfn "[Create] builder.SetMinimumLevel (%A)" level
+                    builder.SetMinimumLevel(level)
+                | LoggerFactoryOptions.LogToConsole ->
+                    // printfn "[Create] builder.AddConsole"
+                    builder.AddConsole(fun c -> c.LogToStandardErrorThreshold <- LogLevel.Error)
+                | LoggerFactoryOptions.LogToSerilog serilogOptions ->
+                    // printfn "[Create] builder.AddSerilog"
+                    builder.AddSerilog(createCustomSerilog customizeSerilog serilogOptions, true)
+                | LoggerFactoryOptions.UseProvider provider ->
+                    // printfn "[Create] builder.AddProvider"
+                    builder.AddProvider(provider)
             )
         )
 
