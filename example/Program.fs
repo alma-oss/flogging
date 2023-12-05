@@ -64,6 +64,23 @@ module WithCustom =
         logger.LogCritical("{level} message", "Critical")
         ()
 
+module Common =
+    let loggerFactory instance =
+        LoggerFactory.create [
+            LogToConsole
+
+            UseLevel LogLevel.Trace
+            //UseProvider (LoggerProvider.TracingProvider.create())
+
+            LogToSerilog (SerilogOptions.ofInstance instance @ [
+                SerilogOption.UseLevel LogLevel.Information
+                AddMetaFromEnvironment "LOGGER_TAGS"
+
+                SerilogOption.IgnorePathHealthCheck
+                SerilogOption.IgnorePathMetrics
+            ])
+        ]
+
 [<EntryPoint>]
 let main argv =
     printfn "Example - logging\n=================\n"
@@ -93,6 +110,7 @@ let main argv =
     logger.LogError("{level} message", "Error")
     logger.LogCritical("{level} message", "Critical") *)
 
-    WithCustom.logWithCustom exampleInstance
+    //WithCustom.logWithCustom exampleInstance)
+    Common.loggerFactory exampleInstance |> ignore
 
     0 // return an integer exit code

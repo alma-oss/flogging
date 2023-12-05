@@ -2,6 +2,7 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- Fix order of builder options
 
 ## 8.3.1 - 2023-12-05
 - Remove missed `printfn`
