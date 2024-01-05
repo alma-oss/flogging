@@ -2,11 +2,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>Alma.Logging</PackageId>
     <Version>8.3.2</Version>
-    <RepositoryUrl>https://github.com/almacareer/prc-flogging</RepositoryUrl>
+    <RepositoryUrl>https://github.com/almacareer/prc-flogging.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/almacareer/prc-flogging</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
