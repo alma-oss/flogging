@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+- [**BC**] Use net8.0
+- Fix package metadata
 
 ## 8.3.2 - 2023-12-05
 - Fix order of builder options
