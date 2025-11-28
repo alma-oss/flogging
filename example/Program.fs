@@ -1,7 +1,7 @@
 // Learn more about F# at http://fsharp.org
 
 open System
-open Alma.ErrorHandling
+open Feather.ErrorHandling
 open Alma.Logging
 open Alma.ServiceIdentification
 open Microsoft.Extensions.Logging
