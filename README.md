@@ -1,23 +1,14 @@
 F-Logging
 =========
 
+[![NuGet](https://img.shields.io/nuget/v/Alma.Logging.svg)](https://www.nuget.org/packages/Alma.Logging)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Alma.Logging.svg)](https://www.nuget.org/packages/Alma.Logging)
+[![Tests](https://github.com/alma-oss/flogging/actions/workflows/tests.yaml/badge.svg)](https://github.com/alma-oss/flogging/actions/workflows/tests.yaml)
+
 Library for Logging to the terminal.
 It logs to the stdout or stderr based on used function. I has colorful output.
 
 ## Install
-
-Add following into `paket.dependencies`
-```
-source https://nuget.pkg.github.com/almacareer/index.json username: "%PRIVATE_FEED_USER%" password: "%PRIVATE_FEED_PASS%"
-# LMC Nuget dependencies:
-nuget Alma.Logging
-```
-
-NOTE: For local development, you have to create ENV variables with your github personal access token.
-```sh
-export PRIVATE_FEED_USER='{GITHUB USERNANME}'
-export PRIVATE_FEED_PASS='{TOKEN}'	# with permissions: read:packages
-```
 
 Add following into `paket.references`
 ```

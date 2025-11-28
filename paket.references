@@ -4,5 +4,5 @@ Microsoft.Extensions.Logging.Console
 Serilog
 Serilog.Sinks.Console
 Serilog.Extensions.Logging
-Alma.ErrorHandling
+Feather.ErrorHandling
 Alma.ServiceIdentification
