@@ -1,0 +1,113 @@
+lockfile_version: '1'
+dependencies: []
+deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/skills/flogging
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/flogging/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:70a4f0498a3807d85740fdda3ba44b878097d351432c7e6358f5382dac2ca94b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/flogging/references/anti-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:22142a485735e6cb6c30c3c9be0867256472456d1304c0c3bf852c79fd1cb145
+- kind: project-relative
+  target: claude
+  value: .claude/skills/flogging/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e44344eecfd571db770c3e4a32bd921887c4e6fab964866d0b039e398bd469e8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/flogging/references/preferred-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:98d981855407489ce17d7fd8095fe9c85ecc5e9c0b57943d1ad4f8001266c906
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/flogging
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/flogging/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:70a4f0498a3807d85740fdda3ba44b878097d351432c7e6358f5382dac2ca94b
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/flogging/references/anti-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:22142a485735e6cb6c30c3c9be0867256472456d1304c0c3bf852c79fd1cb145
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/flogging/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e44344eecfd571db770c3e4a32bd921887c4e6fab964866d0b039e398bd469e8
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/flogging/references/preferred-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:98d981855407489ce17d7fd8095fe9c85ecc5e9c0b57943d1ad4f8001266c906
+local_deployed_files:
+- .agents/skills/flogging
+- .agents/skills/flogging/SKILL.md
+- .agents/skills/flogging/references/anti-patterns.md
+- .agents/skills/flogging/references/examples.md
+- .agents/skills/flogging/references/preferred-patterns.md
+- .claude/skills/flogging
+- .claude/skills/flogging/SKILL.md
+- .claude/skills/flogging/references/anti-patterns.md
+- .claude/skills/flogging/references/examples.md
+- .claude/skills/flogging/references/preferred-patterns.md
+local_deployed_file_hashes:
+  .agents/skills/flogging/SKILL.md: sha256:70a4f0498a3807d85740fdda3ba44b878097d351432c7e6358f5382dac2ca94b
+  .agents/skills/flogging/references/anti-patterns.md: sha256:22142a485735e6cb6c30c3c9be0867256472456d1304c0c3bf852c79fd1cb145
+  .agents/skills/flogging/references/examples.md: sha256:e44344eecfd571db770c3e4a32bd921887c4e6fab964866d0b039e398bd469e8
+  .agents/skills/flogging/references/preferred-patterns.md: sha256:98d981855407489ce17d7fd8095fe9c85ecc5e9c0b57943d1ad4f8001266c906
+  .claude/skills/flogging/SKILL.md: sha256:70a4f0498a3807d85740fdda3ba44b878097d351432c7e6358f5382dac2ca94b
+  .claude/skills/flogging/references/anti-patterns.md: sha256:22142a485735e6cb6c30c3c9be0867256472456d1304c0c3bf852c79fd1cb145
+  .claude/skills/flogging/references/examples.md: sha256:e44344eecfd571db770c3e4a32bd921887c4e6fab964866d0b039e398bd469e8
+  .claude/skills/flogging/references/preferred-patterns.md: sha256:98d981855407489ce17d7fd8095fe9c85ecc5e9c0b57943d1ad4f8001266c906
