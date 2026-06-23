@@ -1,5 +1,9 @@
 # AGENTS.md — Alma.Logging
 
+## Agent Skills
+
+This repo ships Agent Skill for the `Alma.Logging` library. Compatible agents discover it automatically; see `.agents/skills/flogging/SKILL.md`.
+
 ## Project Purpose
 
 F# library for structured logging to the terminal with colorful output, supporting stdout/stderr routing. Integrates with `Microsoft.Extensions.Logging` and `Serilog`, with environment-variable-based configuration for log level, output format, and metadata. Published as NuGet package `Alma.Logging`.
