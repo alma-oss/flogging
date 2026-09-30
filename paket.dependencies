@@ -8,6 +8,7 @@ nuget Serilog.Sinks.Console ~> 6.0
 nuget Serilog.Extensions.Logging ~> 10.0
 nuget Feather.ErrorHandling ~> 2.0
 nuget Alma.ServiceIdentification ~> 11.0
+nuget Alma.Metrics ~> 13.0
 
 // [ FAKE GROUP ]
 group Build

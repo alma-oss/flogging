@@ -4,6 +4,7 @@ open System
 open Microsoft.Extensions.Logging
 open Serilog
 open Serilog.Events
+open Alma.ServiceIdentification
 
 type private SerilogBuilderOption =
     | UseLevel of LogEventLevel
@@ -11,6 +12,7 @@ type private SerilogBuilderOption =
     | LogToConsoleAsJson
     | AddMeta of name: string * value: string
     | IgnorePaths of string list
+    | CountMessagesByLevel of Instance
 
 type SerilogOption =
     | UseLevel of LogLevel
@@ -25,6 +27,7 @@ type SerilogOption =
     | IgnorePathMetrics
     | IgnorePathReady
     | IgnorePaths of string list
+    | CountMessagesByLevel of Instance
 
 type private LoggerFactoryOptions =
     | UseLevel of LogLevel
@@ -143,6 +146,8 @@ module LoggerFactory =
                 | SerilogOption.IgnorePathMetrics -> acc |> ignorePaths [ "/metrics" ]
                 | SerilogOption.IgnorePathReady -> acc |> ignorePaths [ "/ready" ]
                 | SerilogOption.IgnorePaths paths -> acc |> ignorePaths paths
+
+                | SerilogOption.CountMessagesByLevel instance -> SerilogBuilderOption.CountMessagesByLevel instance :: acc
             ) []
             |> List.rev
             |> List.distinct
@@ -245,6 +250,9 @@ module LoggerFactory =
                     | true, value -> value.ToString() |> ignoredPaths.Contains
                     | _ -> false
                 )
+
+            | SerilogBuilderOption.CountMessagesByLevel instance ->
+                builder.WriteTo.Sink(LogLevelCounterSink instance)
         )
 
         builder.CreateLogger()
