@@ -6,3 +6,4 @@ Serilog.Sinks.Console
 Serilog.Extensions.Logging
 Feather.ErrorHandling
 Alma.ServiceIdentification
+Alma.Metrics

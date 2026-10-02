@@ -62,3 +62,20 @@ module LogLevel =
         | LogLevel.Warning -> LogEventLevel.Warning
         | LogLevel.Error -> LogEventLevel.Error
         | _ -> LogEventLevel.Fatal
+
+    let ofLogEventLevel = function
+        | LogEventLevel.Verbose -> LogLevel.Trace
+        | LogEventLevel.Debug -> LogLevel.Debug
+        | LogEventLevel.Information -> LogLevel.Information
+        | LogEventLevel.Warning -> LogLevel.Warning
+        | LogEventLevel.Error -> LogLevel.Error
+        | _ -> LogLevel.Critical
+
+    let label = function
+        | LogLevel.Trace -> "trace"
+        | LogLevel.Debug -> "debug"
+        | LogLevel.Information -> "information"
+        | LogLevel.Warning -> "warning"
+        | LogLevel.Error -> "error"
+        | LogLevel.Critical -> "critical"
+        | _ -> "none"

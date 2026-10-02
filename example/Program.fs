@@ -76,6 +76,8 @@ module Common =
                 SerilogOption.UseLevel LogLevel.Information
                 AddMetaFromEnvironment "LOGGER_TAGS"
 
+                SerilogOption.CountMessagesByLevel instance
+
                 SerilogOption.IgnorePathHealthCheck
                 SerilogOption.IgnorePathMetrics
             ])
@@ -111,6 +113,19 @@ let main argv =
     logger.LogCritical("{level} message", "Critical") *)
 
     //WithCustom.logWithCustom exampleInstance)
-    Common.loggerFactory exampleInstance |> ignore
+    use factory = Common.loggerFactory exampleInstance
+
+    let logger = factory.CreateLogger("Example")
+
+    logger.LogTrace("{Level} message", "Trace")
+    logger.LogDebug("{Level} message", "Debug")
+    logger.LogInformation("{Level} message", "Information")
+    logger.LogWarning("{Level} message", "Warning")
+    logger.LogWarning("{Level} message again", "Warning")
+    logger.LogError("{Level} message", "Error")
+    logger.LogCritical("{Level} message", "Critical")
+
+    printfn "\n\nLogMetrics.format ()\n--------------------\n"
+    printfn "%s" (LogMetrics.format ())
 
     0 // return an integer exit code

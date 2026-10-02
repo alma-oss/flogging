@@ -104,6 +104,44 @@ LoggerFactory.create [
 ]
 ```
 
+## Count log messages as a metric
+Add the `CountMessagesByLevel` Serilog option to expose a Prometheus counter of emitted log
+lines per level in the [Alma.Metrics](https://www.nuget.org/packages/Alma.Metrics) default
+registry. It carries the standard `svc_*` identity labels of the given `Instance`.
+
+```fs
+open Alma.Logging
+open Alma.ServiceIdentification
+
+LoggerFactory.create [
+    LogToSerilog (SerilogOptions.ofInstance instance @ [
+        SerilogOption.CountMessagesByLevel instance
+
+        SerilogOption.IgnorePathHealthCheck
+        SerilogOption.IgnorePathMetrics
+    ])
+]
+```
+
+Expose it on the service `/metrics` endpoint by including `LogMetrics.format ()` in the
+rendered metrics:
+
+```fs
+Metrics.currentState instance [ LogMetrics.format () ]
+```
+
+The metric is:
+
+```
+# TYPE log_messages_total counter
+log_messages_total{svc_domain,svc_context,svc_purpose,svc_version,level} N
+```
+
+The `level` label follows the `LOG_LEVEL` vocabulary: `trace | debug | information | warning
+| error | critical` (Serilog `Verbose` -> `trace`, `Fatal` -> `critical`). Only events that
+reach the sink are counted, so events below the configured `MinimumLevel` and events removed
+by the `IgnorePaths` filter (e.g. `/health-check`, `/metrics`) are not counted.
+
 ## Useful links
 - https://www.tutorialsteacher.com/core/fundamentals-of-logging-in-dotnet-core
 - https://benfoster.io/blog/serilog-best-practices/

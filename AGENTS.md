@@ -107,6 +107,11 @@ Standard library target chain: `Clean → AssemblyInfo → Build → Lint → Te
 - `Alma.ServiceIdentification` for service identity in metadata
 - `example/` folder contains usage examples — keep up to date
 
+## Specs and plans
+
+SDD artifacts live under `docs/`: durable specs in `docs/specs/<capability>/spec.md`,
+transient plans in `docs/tasks/<work-slug>/plan.md` + `todo.md` (deleted once the work ships).
+
 ## Pitfalls
 
 - **No tests** — no test project exists currently
