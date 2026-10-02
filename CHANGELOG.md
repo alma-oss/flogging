@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 12.1.0 - 2026-10-02
 - Add `SerilogOption.CountMessagesByLevel` and `LogMetrics.format` (`log_messages_total{level}` via Alma.Metrics)
 
 ## 12.0.0 - 2026-01-28
